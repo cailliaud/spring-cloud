@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    function:
+      definition: forward
+    stream:
+      bindings:
+        forward-in-0:
+          destination: source
+        forward-out-0:
+          destination: target
+      kafka:
+        binder:
+          auto-create-topics: true
