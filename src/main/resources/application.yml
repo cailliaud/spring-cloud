@@ -1,13 +1,36 @@
 spring:
   cloud:
     function:
-      definition: forward
+      definition: forward;log;upper;lower;process
+      routing-expression: headers['type']
     stream:
+      function:
+        bindings:
+          upper-in-0: nowhereToUpper
+          lower-in-0: nowhereToLower
+          log-in-1: nowhereToLogger
       bindings:
+        log-in-0:
+          destination: somewhere
+          content-type: application/json
         forward-in-0:
           destination: source
+          content-type: application/json
         forward-out-0:
           destination: target
+          content-type: application/json
+        process-in-0:
+          destination: nowhere
+          content-type: application/json
+        nowhereToLower:
+          destination: nowhere
+          content-type: application/json
+        nowhereToUpper:
+          destination: nowhere
+          content-type: application/json
+        nowhereToLogger:
+          destination: nowhere
+          content-type: application/json
       kafka:
         binder:
           auto-create-topics: true
