@@ -17,6 +17,9 @@
         <java.version>11</java.version>
         <testcontainers.version>1.15.3</testcontainers.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+        <sonar.projectKey>cailliaud_spring-cloud-stream</sonar.projectKey>
+        <sonar.organization>cailliaud</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
