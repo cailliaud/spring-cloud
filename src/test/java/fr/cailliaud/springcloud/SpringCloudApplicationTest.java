@@ -2,6 +2,7 @@ package fr.cailliaud.springcloud;
 
 import fr.cailliaud.springcloud.service.SimpleService;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,24 @@ import java.nio.charset.StandardCharsets;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Import(TestChannelBinderConfiguration.class)
+@DisplayName("Test consumer et producer")
 class SpringCloudApplicationTest {
 
-  @Autowired InputDestination inputDestination;
-  @Autowired OutputDestination outputDestination;
+  @Autowired
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  InputDestination inputDestination;
+
+  @Autowired
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  OutputDestination outputDestination;
+
   @Autowired SimpleProducer simpleProducer;
 
   @SpyBean SimpleService simpleService;
 
   @Test
+  @DisplayName(
+      "Quand un message est reçu sur le binding 'source', il est alors réémis vers le binding 'target'")
   void doit_reemettre_message() {
     // Given
     Message<String> message =
@@ -42,6 +52,7 @@ class SpringCloudApplicationTest {
   }
 
   @Test
+  @DisplayName("Un producer doit publier un évènement dans le binding 'target'")
   void doit_reemettre_message_provenant_producer() {
     // Given
     String payload = "Coucou";
@@ -57,6 +68,8 @@ class SpringCloudApplicationTest {
   }
 
   @Test
+  @DisplayName(
+      "Quand un évènement est publié sur le binding 'somewhere', alors il doit être consommé")
   void doit_consommer_evenement() {
     // Given
     Message<String> message = MessageBuilder.withPayload("Coucou").build();
@@ -67,6 +80,8 @@ class SpringCloudApplicationTest {
   }
 
   @Test
+  @DisplayName(
+      "Un message consommé avec le header 'type'='upper' doit être rooté vers le service de log.")
   void test() {
     // Given
     Message<String> message =
